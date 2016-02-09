@@ -1,0 +1,150 @@
+package monster;
+
+import java.util.Random;
+
+import character.Player;
+
+public class MonsterEffect {
+
+	public int dieRoll() {
+		Random number = new Random();
+		return number.nextInt(5) + 1;
+	}
+
+	public void playerTurnEffect(String name, Player player, Monster monster, int monsterHpPrev) {
+
+		if(name.equalsIgnoreCase("scavanger") == true){
+			scavangerEffect(monster);
+		}else if(name.equalsIgnoreCase("helium") == true){
+			heliumEffect(monster);
+		}else if(name.equalsIgnoreCase("lithium") == true){
+			boronEffect(monsterHpPrev, monster, player);
+		}
+	}
+
+	public void monsterBeginTurnEffect(String name, Player player,
+			Monster monster,int num) {
+
+		if(name.equalsIgnoreCase("scavanger") == true){
+			scavangerEffect(monster);
+		}else if(name.equalsIgnoreCase("helium") == true){
+			heliumEffect(monster);
+		}else if(name.equalsIgnoreCase("lithium") == true){
+			lithiumEffect(player, monster);
+		}else if(name.equalsIgnoreCase("carbon") == true){
+			carbonEffect(monster);
+		}else if(name.equalsIgnoreCase("oxygen") == true){
+			oxygenEffect(monster);
+		}else if(name.equalsIgnoreCase("neon") == true){
+			neonEffect(num, player, monster);
+		}
+	}
+
+	public void monsterEndTurnEffect(String name, Player player, Monster monster, int num, int playerHpPrev) {
+		if(name.equalsIgnoreCase("scavanger") == true){
+			scavangerEffect(monster);
+		}else if(name.equalsIgnoreCase("helium") == true){
+			heliumEffect(monster);
+		}else if(name.equalsIgnoreCase("beryllium") == true){
+			berylliumEffect(playerHpPrev, player);
+		}else if(name.equalsIgnoreCase("nitrogen") == true){
+			nitrogenEffect(player, monster);
+		}else if(name.equalsIgnoreCase("fluorine") == true){
+			fluorineEffect(num, player);
+		}
+	}
+
+	//all times
+	protected void scavangerEffect(Monster monster) {
+		int num1 = dieRoll();
+		int num2 = dieRoll();
+
+		if (num1 == num2) {
+			monster.setDrop(new int[][] { { 0 }, { 0 }, { 0 }, { 0 } });
+			monster.setHealth(0);
+		}
+	}
+
+	//all times
+	protected void heliumEffect(Monster monster) {
+		int num = dieRoll();
+
+		if (num == 5) {
+			monster.setDrop(new int[][] { { 0 }, { 0 }, { 0 }, { 0 } });
+			monster.setHealth(0);
+		}
+	}
+
+	//before monster attacks
+	protected void lithiumEffect(Player player, Monster monster) {
+		int num = dieRoll();
+
+		if (num == 3) {
+			player.takeDamage(monster.getHealth());
+			monster.setDrop(new int[][] { { 0 }, { 0 }, { 0 }, { 0 } });
+			monster.setHealth(0);
+		}
+	}
+
+	//after monster attacks
+	protected void berylliumEffect(int playerHpPrev, Player player) {
+		if (playerHpPrev > player.getHealth())
+			player.takeDamage(20);
+
+	}
+
+	// player turn
+	protected void boronEffect(int monsterHpPrev, Monster monster, Player player) {
+		
+		if (monsterHpPrev > monster.getHealth()) {
+			int dmg = monster.getHealth() - monsterHpPrev;
+			player.takeDamage(dmg / 4);
+		}
+	}
+
+	//before monster attacks
+	protected void carbonEffect(Monster monster) {
+		int num = dieRoll();
+
+		if (num == 5) {
+			monster.setAttack(2 * monster.getAttack());
+			monster.setHealth(10 + monster.getHealth());
+		}
+	}
+
+	//after monster attacks
+	protected void nitrogenEffect(Player player, Monster monster) {
+		int num = dieRoll();
+
+		if (num == 5)
+			player.takeDamage(monster.getAttack());
+
+	}
+
+	//before monster attacks
+	protected void oxygenEffect(Monster monster) {
+		int num = dieRoll();
+
+		if (num == 1)
+			monster.setHealth(monster.getHealth() + (monster.getAttack() / 2));
+
+	}
+
+	//after monster attacks
+	protected void fluorineEffect(int num, Player player) {
+		Random number = new Random();
+		int index = number.nextInt(8);
+		
+		if(num == 6)
+			player.setElement(index, -1);
+	}
+	
+	//before monster attacks
+	protected void neonEffect(int num, Player player, Monster monster){
+		
+		if(num != 6)
+			player.takeDamage(player.getDefense()+ monster.getAttack());
+		
+	}
+
+}

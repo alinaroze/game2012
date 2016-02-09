@@ -1,0 +1,19 @@
+package inventory;
+
+import character.Player;
+
+public class ElementCreator {
+	private Player currentPlayer;
+
+	private int proton;
+
+	public ElementCreator(Player p) {
+		currentPlayer = p;
+		proton = currentPlayer.getProtonNum();
+	}
+
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
+}

@@ -1,0 +1,166 @@
+package monster;
+
+import gui.BattlePanel;
+import inventory.Inventory;
+import java.util.Random;
+import ctrl.Controller;
+import board.Location;
+import character.Player;
+
+public class BattleSys {
+
+	private MonsterList list = new MonsterList();
+	Controller ctrl;
+	Monster monster;
+	Player player;
+	MonsterEffect effect;
+
+	public BattleSys(Controller c){
+		ctrl = c;
+		monster = retrieveMonster(c.getGame().getGmBoard().getPlayerLoc());
+		player = c.getGame().getPlayer();
+		effect = new MonsterEffect();
+		
+	}
+	public Monster retrieveMonster(Location playerLoc) {
+		Random num = new Random();
+
+		if (playerLoc.getSubBoard() == 0) {
+			return list.getMonster(list.getBoard1(), num.nextInt(4));
+		} else if (playerLoc.getSubBoard() == 1) {
+			return list.getMonster(list.getBoard2(), num.nextInt(4));
+		} else {
+			return list.getMonster(list.getBoard3(), num.nextInt(5));
+		}
+
+	}
+
+	public int dieRoll() {
+		Random number = new Random();
+		return number.nextInt(5) + 1;
+	}
+
+//	public void run(Player player, Location playerLoc,
+//			Controller ctrl, BattlePanel panel) {
+//
+//		monster = retrieveMonster(playerLoc);
+//
+//		int playerRoll = dieRoll();
+//		int monsterRoll = dieRoll();
+//
+//		int monsterHpPrev = monster.getHealth();
+//		int playerHpPrev = player.getHealth();
+//
+//		int[][] drops = monster.getDrop();
+//
+//		if (playerRoll > monsterRoll) {
+//			do {
+////				playerTurn(player, ctrl, panel);
+//				monsterTurn(player, playerHpPrev, ctrl);
+//
+//			} while (monster.getHealth() != 0 || player.getHealth() != 0);
+//		} else {
+//			do {
+//				monsterTurn(player, playerHpPrev, ctrl);
+////				playerTurn(player, ctrl, panel);
+//
+//			} while (monster.getHealth() != 0 || player.getHealth() != 0);
+//		}
+//
+//		playerWins(drops, player, ctrl);
+//
+//		monster.setHealth(monsterHpPrev);
+//		monster.setDrop(drops);
+//
+//	}
+
+	public void monsterTurn() {
+int playerHpPrev = ctrl.getGame().getPlayer().getHealth();
+		int initialDef = monster.getDefense();
+		int initialAtk = monster.getAttack();
+
+		int num = dieRoll();
+		if (num == 6) {
+			monster.setAttack(monster.getAttack() * monster.getAttackCrit());
+			ctrl.getGmWindow().display("The monster has a critical attack!!");
+		}
+
+		effect.monsterBeginTurnEffect(monster.getName(), player, monster, num,
+				ctrl);
+
+		player.takeDamage(monster.getAttack());
+		ctrl.getGmWindow().display("Your health is now " + player.getHealth());
+
+		effect.monsterEndTurnEffect(monster.getName(), player, monster, num,
+				playerHpPrev, ctrl);
+
+		monster.setDefense(initialDef);
+		monster.setAttack(initialAtk);
+	}
+
+//	public void playerTurn(Player player, Controller ctrl, BattlePanel panel) {
+//
+//		if (panel.getAttack().isSelected()) {
+//			playerAttack(player, ctrl);
+//		}
+//
+//	}
+
+	public void playerAttack() {
+		if (monster.getDefense() == 0) {
+			monster.setHealth(monster.getHealth() - player.getDamage());
+			ctrl.getGmWindow().display(
+					"The monster's health is now " + monster.getHealth());
+		} else if (monster.getDefense() == 1) {
+			monster.setHealth(monster.getHealth() - player.getDamage() + 2);
+			ctrl.getGmWindow().display(
+					"The monster's health is now " + monster.getHealth());
+		} else if (monster.getDefense() == 2) {
+			monster.setHealth(monster.getHealth() - 3
+					* (player.getDamage() / 4));
+			ctrl.getGmWindow().display(
+					"The monster's health is now " + monster.getHealth());
+		} else if (monster.getDefense() == 3) {
+			monster.setHealth(monster.getHealth() - 2
+					* (player.getDamage() / 3));
+			ctrl.getGmWindow().display(
+					"The monster's health is now " + monster.getHealth());
+		} else if (monster.getDefense() == 4) {
+			monster.setHealth(monster.getHealth() - (player.getDamage() / 2));
+			ctrl.getGmWindow().display(
+					"The monster's health is now " + monster.getHealth());
+		}
+	}
+
+	public void playerWins(int[][] drops) {
+		player.addProtons(monster.getProtDrop());
+		player.addNeutrons(monster.getNeutDrop());
+		player.gainExperience(monster.getXpDrop());
+
+		int[] result = new int[9];
+
+		if (monster.getName().equals("gatherer")) {
+			for (int j = 0; j < 9; j++) {
+				result[j] = drops[3][j];
+			}
+
+			Random num = new Random();
+			int index = num.nextInt(8);
+
+			player.setElement(result[index], 1);
+			monster.setDrop(drops);
+
+		} else {
+			player.setElement(monster.getElemDrop(), monster.getNumElem());
+
+		}
+
+	}
+	public Monster getMonster() {
+		return monster;
+	}
+	public void setMonster(Monster monster) {
+		this.monster = monster;
+	}
+
+}

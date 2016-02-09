@@ -1,0 +1,131 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import ctrl.Controller;
+import ctrl.Language;
+import ctrl.Utils;
+
+public class MainFrame extends JFrame implements ActionListener {
+	private MenuBar menuB;
+	private MapPanel mapPane;
+	private CharacterPanel charPane;
+	private JPanel contentPane, centerPane, rightPane, leftPane;
+//	topLeftPane,
+//			bottomLeftPane, topRightPane, bottomRightPane, bottomPane;
+	private JLabel dispLbl;
+	private Language lang;
+	private Controller ctrl;
+
+	/**
+	 * Create the frame.
+	 */
+	public MainFrame(Controller ctrl) {
+		this.ctrl = ctrl;
+		lang = ctrl.getLang();
+		setTitle(lang.THE_ALCHEMIST);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		init();
+		// onGameInit();
+
+	}
+
+	public void init() {
+		setSize(400, 560);
+
+		menuB = new MenuBar(ctrl);
+		setJMenuBar(menuB);
+
+		contentPane = new JPanel();
+
+		contentPane.setLayout(new BorderLayout(0, 0));
+
+		centerPane = new JPanel();
+		centerPane.setLayout(new BoxLayout(centerPane, BoxLayout.Y_AXIS));
+		centerPane.add(new ImagePanel(Utils.TITLE_IMAGE));
+		contentPane.add(centerPane, BorderLayout.CENTER);
+
+		add(contentPane);
+
+	}
+
+	public void onNewGame() {
+		ConfigFrame conf = new ConfigFrame(ctrl);
+	}
+
+	public void onGameInit() {
+		
+		menuB.onGameInit();
+
+		int bdSize = (ctrl.getGame().getGmBoard().getNumSpaces() * 25);
+		setSize(400 + bdSize, 75 + bdSize );
+		centerPane.remove(0);
+		mapPane = new MapPanel(ctrl);
+		centerPane.add(mapPane);
+
+		leftPane = new SidePanel();
+
+		leftPane.setSize(200, bdSize);
+		contentPane.add(leftPane, BorderLayout.WEST);
+
+		rightPane = new SidePanel();
+		rightPane.setSize(200, bdSize);
+		contentPane.add(rightPane, BorderLayout.EAST);
+
+		MovePanel mv = new MovePanel(ctrl);
+		AlchemyPanel alc = new AlchemyPanel(ctrl);
+		InventoryPanel inv = new InventoryPanel(ctrl);
+		charPane = new CharacterPanel(ctrl);
+		leftPane.add(charPane);
+		leftPane.add(inv);
+		rightPane.add(mv);
+		rightPane.add(alc);
+		display("NEW GAME");
+
+	}
+
+	public void onGmOver() {
+		centerPane.remove(0);
+		ImagePanel gmOverPane = new ImagePanel(Utils.GAMEOVER_IMAGE);
+		centerPane.add(gmOverPane);
+		setSize(400, 560);
+		leftPane.removeAll();
+		rightPane.removeAll();
+		menuB.onGameOver();
+
+	}
+
+	public void display(String msg) {
+		if (centerPane.getComponentCount() > 1)
+			centerPane.remove(1);
+
+		dispLbl = new JLabel("");
+		centerPane.add(dispLbl, BorderLayout.SOUTH);
+		repaint();
+		dispLbl.setText(msg);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		onGameInit();
+	}
+
+	public MapPanel getMapPanel() {
+		return mapPane;
+	}
+
+	public void refresh() {
+		mapPane.refreshMap();
+		mapPane.repaint();
+		charPane.refresh();
+
+	}
+
+}

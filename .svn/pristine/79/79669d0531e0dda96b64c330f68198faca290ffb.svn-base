@@ -1,0 +1,216 @@
+package ctrl;
+
+import gui.MainFrame;
+import gui.SaveLoadFrame;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+import character.Event;
+
+import shop.ItemShop;
+
+/**
+ * This class contains the primary logic for major operations of the game.
+ * 
+ * 
+ * @author Grant, Will
+ * 
+ */
+public class Controller implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	private Game game;
+	private transient Language lang = new Language(new File(Utils.ENGLISH_LANG_FILE));
+	private transient MainFrame gmWindow;
+	private boolean moveable = true;
+
+	public static void main(String[] args) {
+
+		Controller cont = new Controller();
+
+		cont.gmWindow = new MainFrame(cont);
+		cont.gmWindow.setVisible(true);
+
+	}
+
+	public Controller() {
+
+	}
+
+	/**
+	 * Creates a new game in the gmWindow.
+	 * 
+	 */
+	public void newGame() {
+		if (hasGame()) {
+			gmWindow.dispose();//Refreshes the MainFrame to reduce errors
+			gmWindow = new MainFrame(this);
+			gmWindow.setVisible(true);
+		}
+		
+		gmWindow.onNewGame();
+	}
+
+	/**
+	 * Loads a game from a saved file. Fails if no file is found, or the format is wrong
+	 * @author Will
+	 */
+	public void loadGame() {
+		try {
+			SaveLoadFrame load = new SaveLoadFrame();
+			FileInputStream fileIn = new FileInputStream(load.getFileToOpen());
+			ObjectInputStream objIn = new ObjectInputStream(fileIn);
+			game = (Game) objIn.readObject();
+			objIn.close();
+			fileIn.close();
+			
+			gmWindow.dispose();//refreshes the mainFrame
+			gmWindow = new MainFrame(this);
+			gmWindow.setVisible(true);
+			
+			gmWindow.onGameInit();
+		} catch (FileNotFoundException e) {
+
+		} catch (IOException e) {
+
+		} catch (ClassNotFoundException e) {
+
+		} catch (NullPointerException e) {
+	
+		}
+
+	}
+
+	/**
+	 * Saves the game to a .alc file, so it can be read by loadGame();
+	 * @author Will
+	 */
+	public void saveGame() {
+		try {
+			SaveLoadFrame save = new SaveLoadFrame();
+			String saveLocation = save.getWhereToSave();
+			if(!saveLocation.endsWith(".alc"))
+				saveLocation=saveLocation+ ".alc";
+			FileOutputStream fileOut = new FileOutputStream(saveLocation);
+
+			ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
+
+			objOut.writeObject(game);
+			objOut.close();
+			fileOut.close();
+		} catch (FileNotFoundException e) {
+
+		} catch (IOException e) {
+
+		} catch (NullPointerException e) {
+
+		}
+	}
+
+	/**
+	 * This method calls the Board's move method, calling a method which
+	 * performs the actions required at a given space
+	 * 
+	 * @param dy the change in player 'height' (up on the screen is positive, N= 1)
+	 * @param dx the change in player lateral, (right is positive, E=1)
+	 * 
+	 * @author Grant
+	 */
+	public void move(int dy, int dx) {
+		game.getGmBoard().move(dy, dx);
+
+		SpotAction();
+
+		gmWindow.refresh();
+
+	}
+
+	/**Checks spots actions in a precedence order (if the spot is a shop a battle should be avoided).
+	 * @author Grant, Will
+	 */
+	public void SpotAction() {
+		if (game.getGmBoard().getPlayerLoc()
+				.equals(game.getGmBoard().getShopLoc())) {
+			ItemShop is = new ItemShop(game.getGmBoard(), game.getPlayer());
+			move(1, 0);
+		}
+		if (isBattle()) {
+			onBattle();
+		}else if(Math.random()<.15){//Activate new event
+			gmWindow.display(game.setRndEvent());//Displays the event to the user
+		}
+	}
+
+	/**determines whether a battle occurs on the space by 'rolling.'
+	 * 
+	 * @return true if battle.
+	 * @author Grant
+	 */
+	private boolean isBattle() {
+		int n = Utils.rndInt(0, 100);
+		if (n <= (game.getDifficulty() + 1) * 20)
+			return true;
+
+		return false;
+	}
+
+	/**launches the battle window, and begins the battle.
+	 * 
+	 */
+	private void onBattle() {
+		gmWindow.onBattle();
+		// System.out.println("Battle.");
+//		 game.getPlayer().gainExperience(Utils.rndInt(0, 50));
+	}
+
+	public void gmOver() {
+		gmWindow.onGmOver();
+	}
+
+	public Language getLang() {
+		return lang;
+	}
+
+	public void setLang(Language lang) {
+		this.lang = lang;
+	}
+
+	public boolean hasGame() {
+		if (game != null)
+			return true;
+		else
+			return false;
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public void setGame(Game gm) {
+		this.game = gm;
+	}
+
+	public MainFrame getGmWindow() {
+		return gmWindow;
+	}
+
+	public void setGmWindow(MainFrame gmWindow) {
+		this.gmWindow = gmWindow;
+	}
+
+	public boolean isMoveable() {
+		return moveable;
+	}
+
+	public void setMoveable(boolean moveable) {
+		this.moveable = moveable;
+	}
+
+}

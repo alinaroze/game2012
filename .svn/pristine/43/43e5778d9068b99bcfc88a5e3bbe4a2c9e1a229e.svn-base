@@ -1,0 +1,94 @@
+package monster;
+
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.util.Scanner;
+
+
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+//import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+
+import ctrl.Controller;
+
+
+
+public class battlePanel extends JPanel implements ActionListener{
+	private JTextArea console;
+	private JButton attack;
+	private JButton use;
+	private JPanel battlePanel;
+	private Controller ctrl;
+	private PopupMenu elements;
+	
+public battlePanel(Controller ctrl){
+	this.ctrl = ctrl;
+	
+	battlePanel = new JPanel(new GridLayout());
+	
+	attack = new JButton("ATTACK!!");
+	use = new JButton("USE YOUR POWERS!!");
+	
+	use.add(elements);
+	
+}
+
+public void createPopupMenu(){
+	elements = new PopupMenu();
+	
+	MenuItem element;
+	element = new MenuItem("Hydrogen");
+	element.addActionListener(this);
+	elements.add(element);
+	
+	element = new MenuItem("Helium");
+	element.addActionListener(this);
+	elements.add(element);
+	
+	element = new MenuItem("Lithium");
+	element.addActionListener(this);
+	elements.add(element);
+	
+	element = new MenuItem("Beryllium");
+	element.addActionListener(this);
+	elements.add(element);
+	
+	element = new MenuItem("Carbon");
+	element.addActionListener(this);
+	elements.add(element);
+	
+	element = new MenuItem("Nitrogen");
+	element.addActionListener(this);
+	elements.add(element);
+	
+	element = new MenuItem("Oxygen");
+	element.addActionListener(this);
+	elements.add(element);
+	
+	element = new MenuItem("Fluorine");
+	element.addActionListener(this);
+	elements.add(element);
+	
+	element = new MenuItem("Neon");
+	element.addActionListener(this);
+	elements.add(element);
+}
+
+public void actionPerformed(ActionEvent click){
+	if(attack.isSelected()){
+		
+	}else if(use.isSelected()){
+		
+	}
+}
+}

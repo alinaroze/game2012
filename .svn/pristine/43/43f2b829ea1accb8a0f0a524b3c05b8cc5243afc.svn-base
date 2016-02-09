@@ -1,0 +1,36 @@
+package gui;
+
+import java.io.File;
+
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+
+
+public class SaveLoadFrame {
+	JFileChooser fc;
+	JFrame frame;
+	
+	public SaveLoadFrame() {
+		frame = new JFrame("Choose save location");
+		fc= new JFileChooser();
+		
+	}
+	
+	public String getWhereToSave(){
+	    int retVal = fc.showSaveDialog(fc);
+	    if(retVal == JFileChooser.APPROVE_OPTION){
+	        File file = fc.getSelectedFile();
+	        return file.getAbsolutePath();
+	    }
+	    return null;
+	}
+	
+	public File getFileToOpen(){
+		int returnVal = fc.showOpenDialog(fc);
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			return file;//.getAbsolutePath();
+		}
+		return null;
+	}
+}

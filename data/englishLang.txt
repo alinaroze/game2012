@@ -1,0 +1,1 @@
+THE_ALCHEMIST	Level	Health	Game	New	Load	Save	Settings	Language	English	Turkish	Difficulty	Hard	Medium	Easy	Alchemy

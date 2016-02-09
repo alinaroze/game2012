@@ -1,0 +1,147 @@
+package board;
+
+import java.io.Serializable;
+
+import ctrl.Utils;
+
+/**
+ * The board class contains the Locations of all key features of the Game. It is
+ * the spatial data structure for the game. It consists of a 1-dimensial array
+ * of SubBoards which themselves consist of a 2-dimensional array of spaces.
+ * 
+ * This class also stores the locations of the player, the boss and the Item
+ * Shop.
+ */
+public class Board implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	private int numSpaces;
+
+	private SubBoard[] boards;
+
+	private Location playerLoc;
+
+	private Location bossLoc;
+
+	private Location shopLoc;
+
+	/**
+	 * CONSTRUCTOR
+	 * 
+	 * @param numBoards
+	 *            the number of SubBoards the map will contain.
+	 * @param numSpaces
+	 *            the number of spaces wide the subBoards will be. (Square)
+	 */
+	public Board(int numBoards, int numSpaces) {
+
+		this.numSpaces = numSpaces;
+		boards = new SubBoard[numBoards];
+		for (int i = 0; i < boards.length; i++)
+			boards[i] = new SubBoard(numSpaces, i, numBoards);
+
+		playerLoc = new Location(0, numSpaces / 2, 1);
+
+		bossLoc = new Location(3,
+				Utils.rndInt(numSpaces / 3 * 2, numSpaces / 3), Utils.rndInt(
+						numSpaces / 2, numSpaces - 1));
+		shopLoc = new Location(1, numSpaces - 2, numSpaces / 2);
+	}
+
+	/**
+	 * This method moves the player's location. It functions by creating a new
+	 * location from the params and the player's starting locations. Then it
+	 * checks whether the new location is passable. If it is, it sets the
+	 * player's location to the new location.
+	 * 
+	 * @param dy
+	 *            The change in the y axis (rows)
+	 * @param dx
+	 *            the change in the x axis (columns)
+	 */
+	public void move(int dy, int dx) {
+		Location newLoc;
+		int newSB = playerLoc.getSubBoard(), newX = playerLoc.getCol(), newY = playerLoc
+				.getRow();
+		if (playerLoc.getCol() + dx < 0) {
+			newSB--;
+			newX = boards[0].spaces[0].length;
+		}
+		if (playerLoc.getCol() + dx >= boards[0].spaces[0].length) {
+			newSB++;
+			newX = 0;
+		} else {
+			newY -= dy;
+			newX += dx;
+		}
+
+		newLoc = new Location(newSB, newY, newX);
+
+		if (isPassable(newLoc))
+			playerLoc = newLoc;
+
+	}
+
+	/**
+	 * Checks if a location is passable.
+	 * 
+	 * @param loc
+	 *            the location to be checked
+	 * @return true if passable, false if impassable.
+	 */
+	public boolean isPassable(Location loc) {
+		return boards[loc.getSubBoard()].spaces[loc.getRow()][loc.getCol()]
+				.isPassable();
+	}
+
+	/**
+	 * Takes a location parameter and returns the straight line distance to the
+	 * boss.
+	 * 
+	 * @param loc
+	 *            The location to be compared with the bosss location.
+	 * @return The straight line distance.
+	 */
+	public int distFromBoss(Location loc) {
+		int bossX = bossLoc.getSubBoard() * boards[0].size() + bossLoc.getCol();
+		int locX = loc.getSubBoard() * boards[0].size() + loc.getCol();
+		int bossY = bossLoc.getRow();
+		int locY = loc.getRow();
+		return (int) Math.sqrt(Math.pow(bossY - locY, 2)
+				+ Math.pow(bossX - locX, 2));
+
+	}
+
+	public Location getPlayerLoc() {
+
+		return playerLoc;
+	}
+
+	public SubBoard getSubBoard(int i) {
+		return boards[i];
+
+	}
+
+	public int getNumSpaces() {
+		return numSpaces;
+	}
+
+	public Location getShopLoc() {
+		return shopLoc;
+	}
+
+	public void setShopLoc(Location shopLoc) {
+		this.shopLoc = shopLoc;
+	}
+
+
+
+	public Location getBossLoc() {
+		return bossLoc;
+	}
+
+	public void setBossLoc(Location bossLoc) {
+		this.bossLoc = bossLoc;
+	}
+}

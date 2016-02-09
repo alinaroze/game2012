@@ -1,0 +1,53 @@
+package gui;
+
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import ctrl.Controller;
+
+public class AlchemyPanel extends JPanel {
+	private JLabel nProtonsLbl;
+	private JButton H, He, Li, Be, B, C, N, O, F, Ne;
+	Controller ctrl;
+
+	/**
+	 * Create the panel.
+	 * 
+	 */
+	public AlchemyPanel(Controller c) {
+		super();
+		ctrl = c;
+		this.setLayout(new GridLayout(6, 2));
+
+		nProtonsLbl = new JLabel("Protons: "
+				+ ctrl.getGame().getPlayer().getProtonNum());
+		add(nProtonsLbl);
+		add(new JPanel());
+
+		H = new JButton("H: "+ctrl.getGame().getPlayer().getElement(1));
+		He = new JButton("He: "+ctrl.getGame().getPlayer().getElement(2));
+		Li = new JButton("Li: "+ctrl.getGame().getPlayer().getElement(3));
+		Be = new JButton("Be: "+ctrl.getGame().getPlayer().getElement(4));
+		B = new JButton("B: "+ctrl.getGame().getPlayer().getElement(5));
+		C = new JButton("C: "+ctrl.getGame().getPlayer().getElement(6));
+		N = new JButton("N: "+ctrl.getGame().getPlayer().getElement(7));
+		O = new JButton("O: "+ctrl.getGame().getPlayer().getElement(8));
+		F = new JButton("F: "+ctrl.getGame().getPlayer().getElement(9));
+		Ne = new JButton("Ne: "+ctrl.getGame().getPlayer().getElement(10));
+		add(H);
+		add(He);
+		add(Li);
+		add(Be);
+		add(B);
+		add(C);
+		add(N);
+		add(O);
+		add(F);
+		add(Ne);
+
+	}
+
+}

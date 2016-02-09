@@ -1,0 +1,149 @@
+0.0 Name
+Price
+Text
+baseDmg CritMult CritRate
+effectIndex
+
+1.1 Sword 1
+100
+A basic sword
+10 2 0.2
+0
+
+1.2 Sword 2
+300
+A better sword
+16 2 0.2
+0
+
+1.3 Sword 3
+500
+A good sword
+25 2 0.2
+0
+
+2.1 Elemental Sword 1
+100
+A sword imbued with elemental power, strengthens against elementals
+10 2 0.16666667
+1
+
+2.2 Elemental Sword 2
+300
+A better sword imbued with elemental power, strengthens against elementals
+18 2 0.16666667
+1
+
+2.3 Elemental Sword 3
+500
+A strong sword imbued with elemental power, strengthens against elementals
+26 2 0.16666667
+2
+
+3.1 Bare Hands 1
+100
+Fistfight!
+5 3 0.3333333
+0
+
+3.2 Bare Hands 2
+300
+Fistfight!
+10 3 0.3333333
+0
+
+3.3 Bare Hands 3
+500
+Fistfight!
+17 3 0.3333333
+0
+
+4.1 Throwing Knives 1
+100
+Small knives which deal massive damage with a critical strike
+5 5 0.2
+0
+
+4.2 Throwing Knives 2
+300
+Knives which deal massive damage with a critical strike
+8 5 0.2
+0
+
+4.3 Throwing Knives 3
+500
+Large knives which deal massive damage with a critical strike
+12 6 0.21
+0
+
+5.1 Mace 1
+100
+A large, powerful mace
+10 2 0.21
+0
+
+5.2 Mace 2
+300
+A larger, more powerful mace
+15 2 0.21
+0
+
+5.3 Mace 3
+500
+The largest, most powerful mace
+23 2 0.21
+0
+
+6.1 Lance 1
+100
+A heavy lance, but difficult to wield
+10 2 0.1
+0
+
+6.2 Lance 2
+300
+A heavy, powerful lance, but difficult to wield
+22 2 0.1
+0
+
+6.3 Lance 3
+500
+A powerful lance, but difficult to wield
+30 2 0.1
+0
+
+7.1 Scythe 1
+100
+A scythe, capable of instantly killing foes
+12 2 0.16666667
+3
+
+7.2 Scythe 2
+300
+A sharp scythe, capable of instantly killing foes
+20 2 0.16666667
+3
+
+7.3 Scythe 3
+500
+A deadly scythe, capable of instantly killing foes
+28 2 0.16666667
+3
+
+8.1 Dagger 1
+100
+A small blade which is leathal when wielded correctly
+8 3 0.2
+0
+
+8.2 Dagger 2
+300
+A blade which is leathal when wielded correctly
+12 3 0.2
+0
+
+8.3 Dagger 3
+500
+A sharp blade which is leathal when wielded correctly
+20 3 0.2
+0

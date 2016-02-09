@@ -1,0 +1,144 @@
+package monster;
+
+/**
+ * 
+ * @author Alina Rozenbaum
+ * 
+ */
+public class Monster {
+
+	private int health, attack, defense, elemDef, attackCrit, numElement;
+	private int[] elemAffected;
+	private int[][] droppedItems;
+	private boolean isElement;
+	private String name;
+
+	public Monster(String nm, int hp, int atk, int atkCrit, int def, int ED,
+			int[] EA, int[][] drop, boolean isElem, int numElem) {
+		name = nm;
+		health = hp;
+		attack = atk;
+		attackCrit = atkCrit;
+		defense = def;
+		elemDef = ED;
+		elemAffected = EA;
+		droppedItems = drop;
+		isElement = isElem;
+		numElement = numElem;
+
+	}
+
+	protected String getName() {
+		return name;
+	}
+
+	protected int getHealth() {
+		return health;
+	}
+
+	public int getAttack() {
+		return attack;
+	}
+
+	protected int getAttackCrit() {
+		return attackCrit;
+	}
+
+	protected int getDefense() {
+		return defense;
+	}
+
+	protected int getED() {
+		return elemDef;
+	}
+
+	protected int[] getEA() {
+		return elemAffected;
+	}
+
+	protected int getProtDrop() {
+		return droppedItems[0][0];
+	}
+
+	protected int getNeutDrop() {
+		return droppedItems[1][0];
+	}
+	
+	protected int getXpDrop(){
+		return droppedItems[2][0];
+	}
+
+	protected int getElemDrop() {
+
+		return droppedItems[3][0];
+	}
+
+	protected int[][] getDrop() {
+		return droppedItems;
+	}
+
+	public boolean getIsElem() {
+		return isElement;
+	}
+
+	public int getNumElem() {
+		return numElement;
+	}
+
+	public void setHealth(int hp) {
+		health = hp;
+	}
+
+	protected void setAttack(int atk) {
+		attack = atk;
+	}
+
+	protected void setAtkCrit(int atkCrit) {
+		attackCrit = atkCrit;
+	}
+
+	protected void setDefense(int def) {
+		defense = def;
+	}
+
+	protected void setED(int ED) {
+		elemDef = ED;
+	}
+
+	protected void setEA(int[] EA) {
+		elemAffected = EA;
+	}
+
+	protected void setDrop(int[][] drop) {
+		droppedItems = drop;
+	}
+
+	protected void setIsElem(boolean isElem) {
+		isElement = isElem;
+	}
+
+	protected void setNumElem(int numElem) {
+		numElement = numElem;
+	}
+
+	protected String elemAffectedToString(int[] array){
+		String output = "Affected by the following elements: ";
+		
+		for(int i = 0; i < array.length; i++){
+			output = output + array[i]+" ";
+		}
+		
+		return output;
+	}
+	
+	protected void displayStat() {
+
+		System.out.println(getName()+"'s current stats are : \n" + "Health: "
+				+ getHealth() + "\nAttack: " + getAttack()
+				+ "\nAttack Critical Multiplier: " + getAttackCrit()
+				+ "\nDefense: " + getDefense() + "\nElemental Defense: "
+				+ getED() + "\n"
+				+ elemAffectedToString(getEA())+"\n");
+	}
+
+}

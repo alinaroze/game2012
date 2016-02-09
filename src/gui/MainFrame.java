@@ -1,0 +1,204 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.border.Border;
+
+import ctrl.Controller;
+import ctrl.Language;
+import ctrl.Utils;
+
+/**
+ * This is the main JFrame for the game. It contains several sub-panels when the
+ * game is active.
+ * 
+ * @author Grant
+ * 
+ */
+public class MainFrame extends JFrame implements ActionListener {
+	private Controller ctrl;
+
+	private Border lineBorder = BorderFactory.createLineBorder(Color.black);
+	private Border raisedBorder = BorderFactory.createRaisedBevelBorder();
+
+	private MenuBar menuB;
+	private MapPanel mapPane;
+	private CharacterPanel charPane;
+	private AlchemyPanel alcPane;
+	private InventoryPanel invPane;
+	private JPanel contentPane, centerPane, rightPane, leftPane;
+	private JScrollPane displayPane;
+	private JTextArea displayBox;
+	private Language lang;
+
+	/**
+	 * Creates the frame. Passes it a reference to the Controller from which all
+	 * game information can be accessed.
+	 * 
+	 * calls the Initialization method.
+	 * 
+	 */
+	public MainFrame(Controller ctrl) {
+		this.ctrl = ctrl;
+		lang = ctrl.getLang();
+		setTitle(lang.THE_ALCHEMIST);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		init();
+		// onGameInit();
+
+	}
+
+	/**
+	 * This sets up the main frame with a title pane and gives the MenuBar so
+	 * that a game can be created or loaded
+	 * 
+	 * 
+	 */
+	public void init() {
+		setSize(400, 560);
+
+		menuB = new MenuBar(ctrl);
+		setJMenuBar(menuB);
+
+		contentPane = new JPanel();
+
+		contentPane.setLayout(new BorderLayout(0, 0));
+
+		centerPane = new JPanel();
+		centerPane.setLayout(new BoxLayout(centerPane, BoxLayout.Y_AXIS));
+		centerPane.add(new ImagePanel(Utils.TITLE_IMAGE));
+		contentPane.add(centerPane, BorderLayout.CENTER);
+
+		add(contentPane);
+
+	}
+
+	/**
+	 * this method creates a configuration frame for a new game.
+	 * 
+	 */
+	public void onNewGame() {
+		ConfigFrame conf = new ConfigFrame(ctrl);
+	}
+
+	/**
+	 * Sets up the Frame for an active game. Adds the move, character, alchemy
+	 * and inventory panels. as well as the primary map panel.
+	 */
+	public void onGameInit() {
+
+		menuB.onGameInit();
+
+		int bdSize = (ctrl.getGame().getGmBoard().getNumSpaces() * 25);
+		setSize(295 + bdSize, 105 + bdSize);
+		centerPane.remove(0);
+
+		mapPane = new MapPanel(ctrl);
+		mapPane.setBorder(raisedBorder);
+		centerPane.add(mapPane);
+		centerPane.setPreferredSize(new Dimension(bdSize + 75, bdSize + 10));
+
+		leftPane = new JPanel();
+		leftPane.setLayout(new BoxLayout(leftPane, BoxLayout.Y_AXIS));
+
+		contentPane.add(leftPane, BorderLayout.WEST);
+
+		rightPane = new JPanel();
+		rightPane.setLayout(new BoxLayout(rightPane, BoxLayout.Y_AXIS));
+
+		contentPane.add(rightPane, BorderLayout.EAST);
+
+		MovePanel mv = new MovePanel(ctrl);
+		alcPane = new AlchemyPanel(ctrl);
+		invPane = new InventoryPanel(ctrl);
+		charPane = new CharacterPanel(ctrl);
+
+		leftPane.add(charPane);
+		leftPane.add(invPane);
+		rightPane.add(mv);
+		rightPane.add(alcPane);
+
+		displayBox = new JTextArea("");
+		displayPane = new JScrollPane(displayBox);
+		displayPane.setPreferredSize(new Dimension(bdSize, 40));
+
+		centerPane.add(displayPane);
+
+		display("NEW GAME");
+
+	}
+
+	public void onBattle() {
+		ctrl.setMoveable(false);
+		centerPane.removeAll();
+		ImagePanel battleImgPane = new ImagePanel(Utils.BATTLE_IMAGE);
+		battleImgPane.setPreferredSize(new Dimension(ctrl.getGame()
+				.getGmBoard().getNumSpaces() * 25 + 75, ctrl.getGame()
+				.getGmBoard().getNumSpaces() * 25 + 10));
+		centerPane.add(battleImgPane);
+		centerPane.add(new BattlePanel(ctrl));
+		centerPane.add(displayPane);
+		validate();
+		repaint();
+		refresh();
+
+}
+
+	/**
+	 * Upon game-over (player death) displays the Game-Over screen and prepares
+	 * the Frame for creation of a new game.
+	 * 
+	 */
+	public void onGmOver() {
+		centerPane.removeAll();
+		ImagePanel gmOverPane = new ImagePanel(Utils.GAMEOVER_IMAGE);
+		centerPane.add(gmOverPane);
+		setSize(400, 560);
+		leftPane.removeAll();
+		rightPane.removeAll();
+		menuB.onGameOver();
+
+	}
+
+	/**
+	 * Displays a message under the CenterPanel.
+	 * 
+	 * @param msg
+	 *            The message to be displayed.
+	 */
+	public void display(String msg) {
+
+		displayBox.setText(displayBox.getText() + "\n" + msg);
+		displayPane.repaint();
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		onGameInit();
+	}
+
+	public MapPanel getMapPanel() {
+		return mapPane;
+	}
+
+	/**
+	 * A centralized refresh method, calling refresh for all subcomponents.
+	 * 
+	 */
+	public void refresh() {
+		mapPane.refresh();
+		charPane.refresh();
+		invPane.refresh();
+		alcPane.refresh();
+	}
+
+}

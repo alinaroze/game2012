@@ -1,0 +1,150 @@
+0.0 Name
+Price
+Text
+baseDef
+effectIndex
+
+1.1 Elemental Shield 1
+100
+Defense increases by 2 against Elementals
+1
+2
+
+1.2 Elemental Shield 2
+300
+Defense increases by 2 against Elementals
+2
+2
+
+1.3 Elemental Shield 3
+500
+Defense increases by 3 against Elementals
+2
+2
+
+2.1 Round Shield 1
+100
+A worn, rounded sheild
+2
+0
+
+2.2 Round Shield 2
+300
+A rounded sheild
+2
+0
+
+2.3 Round Shield 3
+500
+A round, reinforced sheild
+3
+0
+
+3.1 Body Armor 1
+100
+Weak, full body plating
+2
+0
+
+3.2 Body Armor 2
+300
+Full body plating, which reduces all damage by 5 before applying defense
+2
+3
+
+3.3 Body Armor 3
+500
+Full body plating, which substantially reduces damage from non-elementals
+2
+4
+
+4.1 Spiked Shield 1
+100
+Deals minor damage back to the attacker
+1
+5
+
+4.2 Spiked Shield 2
+300
+Deals some damage back to the attacker
+1
+5
+
+4.3 Spiked Shield 3
+500
+Deals substantial damage back to the attacker
+2
+5
+
+5.1 Helm 1
+100
+Provides a weak defense against attacks
+1
+0
+
+5.2 Helm 2
+300
+Provides a some defense against attacks
+2
+0
+
+5.3 Helm 3
+500
+Provides good defense against attacks
+3
+0
+
+6.1 Chain Mail 1
+100
+Lightweight armor which grants a weak defense against attacks
+1
+0
+
+6.2 Chain Mail 2
+300
+Lightweight armor which grants defense against attacks
+2
+0
+
+6.3 Chain Mail 3
+500
+Lightweight armor which grants a strong defense against attacks
+3
+0
+
+7.1 Gauntlets 1
+100
+Weak gloves which help defend against attacks
+1
+0
+
+7.2 Gauntlets 2
+300
+Gloves which help defend against attacks
+2
+0
+
+7.3 Gauntlets 3
+500
+Strong gloves which help defend against attacks
+3
+0
+
+
+8.1 Tortoise Shell 1
+100
+A heavy shell that sheilds against attacks
+1
+0
+
+8.2 Tortoise Shell 2
+300
+A shell which sheilds against attacks, particularly those from elementals
+1
+6
+
+8.3 Tortoise Shell 3
+500
+A strong shell which sheilds against attacks, particularly those from elementals
+3
+6

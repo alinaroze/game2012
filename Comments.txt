@@ -1,0 +1,49 @@
+================================
+General Comments:
+================================
+
+-Write comments (follow Java Doc commenting format, you are required to generate java docs)
+-Add Author comment for each class 
+
+-Be consistent in your naming and follow the rules
+	PACKAGES:
+	-if you will use game.inventory then put "game" prefix for all packages or remove game from this one individual package
+	-package names consist of lower case letters
+	CLASS NAMES:
+	-Start with Capital (fix the problematic ones, e.g., package-info must be PackageInfo)
+	VARIABLE NAMES:
+	-use descriptive variable names. Lines like the following one from your project need to be fixed (what is p, t, and s? ):
+		public Element(String n, int p, String t, int atomicNum) {...}  
+	
+-Packages: create a gui package for all GUI classes, and player package for player related classes
+
+-Use constant variables that are defined in a separate class, e.g., Util, for the sizes of the windows, font names, titles of windows, names of buttons, text of labels, and more.
+Maybe for Language related constants you can create another class Language to differentiate them from other constant variables. 
+That will be very helpful to develop the Language support feature
+ 
+-Follow Indentation and Spacing rules. You can use Ctrl+Shift+F to apply propoer spacing.
+ 
+-Do not commit unnecessary classes!
+
+================================
+Inventory Comments (Steven):
+================================
+
+
+================================
+Effects Comments (Will):
+================================
+
+
+
+================================
+GUI Comments (Grant):
+================================
+
+
+================================
+Monster Comments (Alina):
+================================
+
+
+
